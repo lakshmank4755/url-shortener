@@ -1,0 +1,35 @@
+UrlShortener.TestHarness — executable evidence suite
+(mirrors tests/UrlShortener.UnitTests + IntegrationTests; see docs/06)
+
+-- Base62ShortCodeGenerator --
+  PASS  Generate returns 7-character code
+  PASS  Generate returns only alphanumeric characters
+  PASS  Generate produces varied output across 500 draws
+
+-- UrlSafetyValidator --
+  PASS  Accepts well-formed https URL
+  PASS  Rejects javascript: scheme
+  PASS  Rejects data: scheme
+  PASS  Rejects loopback 127.0.0.1 (SSRF guard)
+  PASS  Rejects cloud metadata IP 169.254.169.254 (SSRF guard)
+  PASS  Rejects private range 10.x.x.x (SSRF guard)
+  PASS  Rejects own domain (redirect-loop guard)
+  PASS  Rejects blocklisted host
+  PASS  Accepts public IP address
+  PASS  Rejects malformed input
+
+-- UrlShortenerService (against real JSON-file repository, temp dir) --
+  PASS  CreateAsync persists a resolvable short URL
+  PASS  ResolveAsync returns the same long URL
+  PASS  CreateAsync with custom alias uses that exact code
+  PASS  CreateAsync with duplicate alias throws AliasAlreadyInUseException
+  PASS  CreateAsync with unsafe URL throws InvalidLongUrlException
+  PASS  DeleteAsync soft-deletes; ResolveAsync then throws NotFound
+  PASS  Expired link throws ShortUrlExpiredException, not NotFound
+  PASS  Persistence survives a fresh repository instance over the same file
+
+-- Analytics pipeline (channel queue -> background writer -> store) --
+  PASS  TryRecordClick enqueues without throwing or blocking
+  PASS  Background writer drains queue and analytics reflects all clicks
+
+====== 23 passed, 0 failed ======

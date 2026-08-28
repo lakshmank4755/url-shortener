@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- No NuGet packages: this sandbox has no internet access to nuget.org.
+         Microsoft.Extensions.Logging/DI abstractions are pulled from the
+         ASP.NET Core shared framework ref-pack instead. In a normal dev
+         environment you would just add the Microsoft.Extensions.Logging.Abstractions
+         and Microsoft.Extensions.DependencyInjection.Abstractions NuGet packages
+         directly and drop this FrameworkReference. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+</Project>
